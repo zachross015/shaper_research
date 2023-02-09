@@ -1,0 +1,55 @@
+\documentclass{article} 
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[margin=1in]{geometry}
+
+\usepackage{xcolor}
+
+\title{Shaper Research}
+
+\begin{document}
+
+\maketitle
+
+\section{Momentum Methods}
+
+The following is a list of accelerated methods for convergence on gradient
+descent. We seek to optimize objectives of the form
+\begin{equation}
+    x_{t + 1} = x_t - \eta \nabla f(x_t).
+\end{equation}
+
+\subsection{Polyak's Method (Heavy ball)}
+
+For some $\beta \in [0, 1]$
+\begin{equation}
+    x_{t + 1} = x_t - \eta \nabla f(x_t) {\color{blue}\ +\ \beta (x_t - x_{t -
+    1})}.
+\end{equation}
+
+\subsection{Nesterov's Method (NAG)}
+
+\begin{itemize}
+    \item Polyak's has the potential to oscillate \cite{lessard2016analysis}
+        despite being $\beta$-smooth and $\alpha$-strongly convex.
+\end{itemize}
+
+For some $\beta \in [0, 1]$
+\begin{equation}
+    x_{t + 1} = x_t - \eta \nabla f(x_t + \beta (x_t - x_{t - 1})) + \beta (x_t - x_{t - 1}).
+\end{equation}
+
+The primary difference between Nesterov's and Polyak's method is that Polyak's
+method evaluates the gradient \emph{before} applying momentum, whereas
+Nesterov's method evaluates the gradient \emph{after} applying momentum.
+
+\subsection{Adam}
+
+\bibliography{bib}
+\bibliographystyle{plain}
+
+\end{document}
+
+
