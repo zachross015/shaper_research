@@ -1,9 +1,0 @@
-\begin{thebibliography}{1}
-
-\bibitem{lessard2016analysis}
-Laurent Lessard, Benjamin Recht, and Andrew Packard.
-\newblock Analysis and design of optimization algorithms via integral quadratic
-  constraints.
-\newblock {\em SIAM Journal on Optimization}, 26(1):57--95, 2016.
-
-\end{thebibliography}

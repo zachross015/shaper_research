@@ -1,0 +1,37 @@
+\begin{thebibliography}{4}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Gadat et~al.(2018)Gadat, Panloup, and Saadane]{10.1214/18-EJS1395}
+S{\'e}bastien Gadat, Fabien Panloup, and Sofiane Saadane.
+\newblock {Stochastic heavy ball}.
+\newblock \emph{Electronic Journal of Statistics}, 12\penalty0 (1):\penalty0
+  461 -- 529, 2018.
+\newblock \doi{10.1214/18-EJS1395}.
+\newblock URL \url{https://doi.org/10.1214/18-EJS1395}.
+
+\bibitem[Lessard et~al.(2016)Lessard, Recht, and Packard]{lessard2016analysis}
+Laurent Lessard, Benjamin Recht, and Andrew Packard.
+\newblock Analysis and design of optimization algorithms via integral quadratic
+  constraints.
+\newblock \emph{SIAM Journal on Optimization}, 26\penalty0 (1):\penalty0
+  57--95, 2016.
+
+\bibitem[Nesterov(1983)]{nesterov1983method}
+Yurii~Evgen'evich Nesterov.
+\newblock A method of solving a convex programming problem with convergence
+  rate o$\backslash$bigl(k\^{}2$\backslash$bigr).
+\newblock In \emph{Doklady Akademii Nauk}, volume 269, pages 543--547. Russian
+  Academy of Sciences, 1983.
+
+\bibitem[Polyak(1964)]{heavyball}
+Boris Polyak.
+\newblock Some methods of speeding up the convergence of iteration methods.
+\newblock \emph{Ussr Computational Mathematics and Mathematical Physics},
+  4:\penalty0 1--17, 12 1964.
+\newblock \doi{10.1016/0041-5553(64)90137-5}.
+
+\end{thebibliography}
