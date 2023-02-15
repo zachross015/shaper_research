@@ -11,6 +11,12 @@
 \newcommand{\E}{\mathbb E} 
 \newcommand{\dv}[2]{\frac{d #1}{d #2}}
 \newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\norm}[1]{\left\| #1 \right\| } 
+
+\newtheorem{lemma}{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
 
 \usepackage{xcolor}
 
@@ -21,8 +27,8 @@
 
 \maketitle
 
-In the following writeup, we explore accelerated gradient descent (GD) methods. These
-are adaptations to the general method
+In the following writeup, we explore accelerated gradient descent (GD) methods
+and their convergence. These are adaptations to the general method
 \begin{equation}
     \label{eq:gd}
     x_{t + 1} = x_t - \eta \nabla f(x_t),
@@ -216,6 +222,57 @@ where $\epsilon \ll 1$ is used to ensure the denominator never reaches 0. Note
 the use of $\xi$ in Equation~\ref{eq:bias_correction}. Although this means there
 will never be 0 bias, the used of a $\beta$ large enough will ensure that this
 value is sufficiently small in most cases.
+
+\section{Convergence Proofs}
+
+We begin by exploring the general convergence proof for Equation~\ref{eq:gd}.
+This requires a few definitions prior to analysis, mainly be defining convexity
+from a theoretical point of view, then adding upper and lower bounds to this
+definition which will aid in these proofs. 
+
+\begin{definition}
+    A function $f: \R^n \rightarrow \R$ is \emph{convex} if for all $x, y \in
+    \R^n$, for all $\lambda \in [0, 1]$,
+    \begin{equation}
+        \lambda f(x) + (1 - \lambda)f(y) \geq f(\lambda x + (1 - \lambda)y).
+    \end{equation}
+\end{definition}
+
+This definition provides an upper bound for a convex function over any two
+points. Likewise, we have that a convex function can be lower-bounded at every
+point by a hyperplane which runs tangential to the function.
+
+\begin{lemma}
+    If a function $f$ is convex, then for all $x, y \in \R^n$,
+    \begin{equation}
+        f(y) \geq f(x) + \nabla {f(x)}^\intercal (y - x)
+    \end{equation}
+\end{lemma}
+
+For these convergence proofs, convex functions need be constrained further by
+their upper and lower bounds. This is where the next two definitions come to
+play.
+
+\begin{definition}
+    A continuously differentiable function $f$ is $\beta$-smooth if its gradient
+    is $\beta$-Lipschitz
+    \begin{equation}
+        \norm{\nabla f(x) - \nabla f(y)} \leq \beta \norm{x - y}.
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    A function $f$ is $\alpha$-strongly convex if for $\alpha > 0$ and $x \in
+    \R^n$
+    \begin{equation}
+        f(x) - \frac{\alpha}{2}\norm{x}^2   
+    \end{equation}
+    is convex.
+\end{definition}
+
+
+
+
 
 \bibliography{bib}
 \bibliographystyle{plainnat}
