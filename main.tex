@@ -351,33 +351,6 @@ characterize $f$.
     \end{equation}
 \end{lemma}
 
-\begin{proof}
-    For any $x$ and $y$ we have
-    \begin{equation}
-        f(x) = f(y) + \nabla {f(y)}^\intercal (x - y) + \frac{1}{2} {(x -
-        y)}^\intercal \nabla^2 f(\xi) (x - y)
-    \end{equation}
-    where $\nabla^2 f(\xi)$ is the hessian of $f$ evaluated at $\xi$. We
-    rearrange this to get 
-    \begin{equation}
-        f(x) - f(y) - \nabla {f(y)}^\intercal (x - y) = \frac{1}{2} {(x -
-        y)}^\intercal \nabla^2 f(\xi) (x - y)
-    \end{equation}
-    and take the norm of both sides
-    \begin{equation}
-        \begin{aligned}
-            \norm{f(x) - f(y) - \nabla {f(y)}^\intercal (x - y)} &= \frac{1}{2}
-            \norm{{(x - y)}^\intercal \nabla^2 f(\xi) (x - y)} \\ 
-            &\leq \frac{1}{2}
-            \norm{x - y}^2 \norm{\nabla^2 f(\xi)} \\
-            &\leq \frac{\beta}{2}
-            \norm{x - y}^2 
-        \end{aligned}
-    \end{equation}
-    where the last line follows from the $\beta$-smooth upper bound on the
-    eigenvalues of $\nabla^2 f$.
-\end{proof}
-
 Lemma~\ref{lem:quadratic_bounds} can be equiavlently stated as providing upper
 and lower bounds on a continuously differentiable, $\beta$-smooth function $f$
 at $y \in \R^n$
@@ -392,7 +365,12 @@ at $y \in \R^n$
     Let $f$ be convex and $\beta$-smooth on $\R^n$. Then for any $x, y \in \R^n$ we have
     \begin{equation}
         0 \leq f(y) - f(x) - \nabla {f(x)}^\intercal (y - x) \leq
-        \frac{\beta}{2} \norm{y - x}^2.
+        \frac{\beta}{2} \norm{y - x}^2
+    \end{equation}
+    and
+    \begin{equation}
+        f(y) \geq f(x) + \nabla {f(x)}^\intercal (y - x) + \frac{1}{2\beta}
+        \norm{\nabla f(y) - \nabla f(x)}^2.
     \end{equation}
 \end{lemma}
 
