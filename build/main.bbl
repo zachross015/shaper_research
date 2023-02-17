@@ -1,4 +1,4 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{6}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -13,12 +13,25 @@ S{\'e}bastien Gadat, Fabien Panloup, and Sofiane Saadane.
 \newblock \doi{10.1214/18-EJS1395}.
 \newblock URL \url{https://doi.org/10.1214/18-EJS1395}.
 
+\bibitem[Kingma and Ba(2015)]{DBLP:journals/corr/KingmaB14}
+Diederik~P. Kingma and Jimmy Ba.
+\newblock Adam: {A} method for stochastic optimization.
+\newblock In Yoshua Bengio and Yann LeCun, editors, \emph{3rd International
+  Conference on Learning Representations, {ICLR} 2015, San Diego, CA, USA, May
+  7-9, 2015, Conference Track Proceedings}, 2015.
+\newblock URL \url{http://arxiv.org/abs/1412.6980}.
+
 \bibitem[Lessard et~al.(2016)Lessard, Recht, and Packard]{lessard2016analysis}
 Laurent Lessard, Benjamin Recht, and Andrew Packard.
 \newblock Analysis and design of optimization algorithms via integral quadratic
   constraints.
 \newblock \emph{SIAM Journal on Optimization}, 26\penalty0 (1):\penalty0
   57--95, 2016.
+
+\bibitem[Mitliagka(2020)]{nesterovnotes}
+Ioannis Mitliagka.
+\newblock Lecture 6 nesterov's momentum, stochastic gradient descent, Winter
+  2020.
 
 \bibitem[Nesterov(1983)]{nesterov1983method}
 Yurii~Evgen'evich Nesterov.

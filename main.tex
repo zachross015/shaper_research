@@ -6,6 +6,8 @@
 \usepackage[margin=1in]{geometry}
 \usepackage[numbers]{natbib}
 \usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{tikz}
 
 \newcommand{\R}{\mathbb R} 
 \newcommand{\E}{\mathbb E} 
@@ -225,6 +227,35 @@ value is sufficiently small in most cases.
 
 \section{Convergence Proofs}
 
+\begin{figure}[t]
+    \begin{center}
+        \begin{tikzpicture}[scale=1, transform shape]
+            \begin{axis}[xmin=-4, xmax=4]
+                \addplot[color=black] (\x, {(\x)^2});
+                \addplot[color=red] coordinates { (-2,4) (3,9) };
+                \fill[color=red] (axis cs:-2,4) circle (2pt and 2pt);
+                \fill[color=red] (axis cs:3,9) circle (2pt and 2pt);
+                \addplot[color=blue] coordinates{ (-4,0) (4,0) };
+                \fill[color=blue] (axis cs:0,0) circle (2pt and 2pt);
+
+                \addplot[color=red,dashed,thick] coordinates { (1.75,3.0625) (1.75,7.75) };
+                \addplot[color=blue,dashed,thick] coordinates { (1.75,3.0625) (1.75,0) };
+                \fill[color=red] (axis cs:1.75,7.75) circle (2pt and 2pt);
+                \fill[color=blue] (axis cs:1.75,0) circle (2pt and 2pt);
+                \fill (axis cs:1.75,3.0625) circle (2pt and 2pt);
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+    \caption{Graph of the convex function $f(x) = x^2$. The solid red line
+    indicates an interpolation between points $(-2, 4)$ and $(3, 9)$ on the
+    graph while the dashed red line demonstrates the distance between the
+    theoretical upper bound and the evaluation for $x = 1.75$. Likewise, the
+    solid blue line indicates the hyperplane which runs tangential to the point
+    $(0, 0)$ while the dashed blue line demonstrates the distance between the
+    theoretical lower bound and the evaluation for the same $x$.}%
+    \label{fig:convex}
+\end{figure}
+
 We begin by exploring the general convergence proof for Equation~\ref{eq:gd}.
 This requires a few definitions prior to analysis, mainly be defining convexity
 from a theoretical point of view, then adding upper and lower bounds to this
@@ -238,28 +269,24 @@ definition which will aid in these proofs.
     \end{equation}
 \end{definition}
 
-This definition provides an upper bound for a convex function over any two
-points. Likewise, we have that a convex function can be lower-bounded at every
-point by a hyperplane which runs tangential to the function.
+This definition in essence states that any interpolation between two points
+evaluated on $f$ is greater than evaluating $f$ on the interpolated points. This
+provides an upper bound for a convex function over any two points and is
+demonstrated by the red line in Figure~\ref{fig:convex}. Likewise, we
+have that a convex function can be lower-bounded at every point by a hyperplane
+which runs tangential to the function.
 
 \begin{lemma}
+    \label{lem:convex_bound}
     If a function $f$ is convex, then for all $x, y \in \R^n$,
     \begin{equation}
         f(y) \geq f(x) + \nabla {f(x)}^\intercal (y - x)
     \end{equation}
 \end{lemma}
 
-For these convergence proofs, convex functions need be constrained further by
-their upper and lower bounds. This is where the next two definitions come to
-play.
-
-\begin{definition}
-    A continuously differentiable function $f$ is $\beta$-smooth if its gradient
-    is $\beta$-Lipschitz
-    \begin{equation}
-        \norm{\nabla f(x) - \nabla f(y)} \leq \beta \norm{x - y}.
-    \end{equation}
-\end{definition}
+This concept is demonstrated by the blue line in Figure~\ref{fig:convex}. We
+further refine the definition of convexity into \emph{strong convexity}, which
+enables tighter quadratic lower bounds.
 
 \begin{definition}
     A function $f$ is $\alpha$-strongly convex if for $\alpha > 0$ and $x \in
@@ -270,7 +297,77 @@ play.
     is convex.
 \end{definition}
 
+Strong convexity allows us to apply a tighter lower bound to that derived in
+Lemma~\ref{lem:convex_bound} using the following Lemma.
 
+\begin{lemma}
+    Let $f$ be $\alpha$-strong convex. Then for all $x, y \in \R^n$ we have 
+    \begin{equation}
+        f(y) \geq f(x) + \nabla {f(x)}^\intercal(y - x) + \frac{\alpha}{2}
+        \norm{y - x}^2
+    \end{equation}
+\end{lemma}
+
+\begin{definition}
+    A continuously differentiable function $f$ is $\beta$-smooth if its gradient
+    is $\beta$-Lipschitz
+    \begin{equation}
+        \norm{\nabla f(x) - \nabla f(y)} \leq \beta \norm{x - y}.
+    \end{equation}
+\end{definition}
+
+\begin{lemma}[Quadratic Bounds]
+    \label{lem:quadratic_bounds}
+    Let $f$ be $\beta$-smooth on $\R^n$. Then for any $x, y \in \R^n$ we have 
+    \begin{equation}
+        \norm{f(y) - f(x) - \nabla {f(x)}^\intercal(y - x)} \leq \frac{\beta}{2}
+        \norm{y - x}^2.
+    \end{equation}
+\end{lemma}
+
+\begin{proof}
+    For any $x$ and $y$ we have
+    \begin{equation}
+        f(x) = f(y) + \nabla {f(y)}^\intercal (x - y) + \frac{1}{2} {(x -
+        y)}^\intercal \nabla^2 f(\xi) (x - y)
+    \end{equation}
+    where $\nabla^2 f(\xi)$ is the hessian of $f$ evaluated at $\xi$. We
+    rearrange this to get 
+    \begin{equation}
+        f(x) - f(y) - \nabla {f(y)}^\intercal (x - y) = \frac{1}{2} {(x -
+        y)}^\intercal \nabla^2 f(\xi) (x - y)
+    \end{equation}
+    and take the norm of both sides
+    \begin{equation}
+        \begin{aligned}
+            \norm{f(x) - f(y) - \nabla {f(y)}^\intercal (x - y)} &= \frac{1}{2}
+            \norm{{(x - y)}^\intercal \nabla^2 f(\xi) (x - y)} \\ 
+            &\leq \frac{1}{2}
+            \norm{x - y}^2 \norm{\nabla^2 f(\xi)} \\
+            &\leq \frac{\beta}{2}
+            \norm{x - y}^2 
+        \end{aligned}
+    \end{equation}
+    where the last line follows from the $\beta$-smooth upper bound on the
+    eigenvalues of $\nabla^2 f$.
+\end{proof}
+
+Lemma~\ref{lem:quadratic_bounds} can be equiavlently stated as providing upper
+and lower bounds on a continuously differentiable, $\beta$-smooth function $f$
+at $y \in \R^n$
+\begin{equation}
+    f(x) + \nabla {f(x)}^\intercal(y - x) - \frac{\beta}{2} \norm{y - x}^2 \leq
+    f(y) \leq
+    f(x) + \nabla {f(x)}^\intercal(y - x) + \frac{\beta}{2} \norm{y - x}^2
+\end{equation}
+
+\begin{lemma}
+    Let $f$ be $\beta$-smooth on $\R^n$. Then for any $x, y \in \R^n$ we have
+    \begin{equation}
+        f(y) \geq f(x) + \nabla {f(x)}^\intercal(y - x) + \frac{1}{2
+        \beta}\norm{\nabla f(y) - \nabla f(x)}^2.
+    \end{equation}
+\end{lemma}
 
 
 
