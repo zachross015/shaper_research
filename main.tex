@@ -364,11 +364,13 @@ at $y \in \R^n$
     \label{lem:con_smo}
     Let $f$ be convex and $\beta$-smooth on $\R^n$. Then for any $x, y \in \R^n$ we have
     \begin{equation}
+        \label{eq:lem4_1}
         0 \leq f(y) - f(x) - \nabla {f(x)}^\intercal (y - x) \leq
         \frac{\beta}{2} \norm{y - x}^2
     \end{equation}
     and
     \begin{equation}
+        \label{eq:lem4_2}
         f(y) \geq f(x) + \nabla {f(x)}^\intercal (y - x) + \frac{1}{2\beta}
         \norm{\nabla f(y) - \nabla f(x)}^2.
     \end{equation}
@@ -384,18 +386,22 @@ at $y \in \R^n$
     \end{equation}
 \end{lemma}
 
-\begin{theorem}
-    Let $f$ be convex, $\beta$-smooth, and $\alpha$-strongly convex. Then the
+\begin{theorem}[General Convergence]
+    Let $f$ be $\beta$-smooth  and $\alpha$-strongly convex. Then the
     gradient descent update listed in Equation~\ref{eq:gd} with learning rate
     $\eta$ satisfies
     \begin{equation}
-        f(x_t) - f(x^*) \leq \frac{\beta}{2} {\left( 1 - \eta \beta
+        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2} {\left( 1 - \eta \beta
         \right)}^{2t} \norm{x_1 - x^*}^2.
     \end{equation}
 \end{theorem}
 
 \begin{proof}
-    Let $x^*$ be an optimum. Since $f$ is $\beta$-smooth, convex, and
+    Define
+    \begin{equation}
+        x^* = \arg \min_{x \in \R^n} f(x)
+    \end{equation} as an optimum.
+    Since $f$ is $\beta$-smooth, convex, and
     $\nabla f(x^*) = 0$ by definition, Lemma~\ref{lem:con_smo} yields
     \begin{equation}
         \label{eq:to_bound}
@@ -408,7 +414,13 @@ at $y \in \R^n$
     We can then bound Equation~\ref{eq:to_bound} by bounding $\norm{x_t - x^*}^2$.
     \begin{equation}
         \begin{aligned}
-            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta {\nabla
+            \norm{x_{t + 1} - x^*}^2 &= {\left( x_{t} - \eta \nabla f(x_t) - x^*
+            \right)}^\intercal \left( x_{t} - \eta \nabla f(x_t) - x^* \right)
+            \\
+            &= {\left( (x_{t} - x^*) - \eta \nabla f(x_t) 
+            \right)}^\intercal \left( (x_{t}-x^*) - \eta \nabla f(x_t) \right)
+            \\
+            &= \norm{x_t - x^*}^2 - 2\eta {\nabla
             f(x_t)}^\intercal (x_t - x^*) + \eta^2 \norm{\nabla f(x_t)}^2 \\
             &= \norm{x_t - x^*}^2 - 2\eta {[\nabla
             f(x_t) - \nabla f(x^\star)]}^\intercal (x_t - x^*) + \eta^2
@@ -419,13 +431,91 @@ at $y \in \R^n$
             &\leq \left[ 1 - 2\eta \frac{\alpha \beta}{\alpha + \beta}
               + \eta^2\beta^2  - 2\eta\frac{\beta^2}{\alpha +
             \beta} \right]\norm{x_t - x^*}^2 \\
+            &\leq \left[ 1 - 2\eta \beta 
+              + \eta^2\beta^2  \right]\norm{x_t - x^*}^2 \\
             &= {\left( 1 -  \eta\beta  \right)}^2\norm{x_t - x^*}^2 \\
             &\leq {\left( 1 -  \eta\beta  \right)}^{2t}\norm{x_1 - x^*}^2 \\
         \end{aligned}
     \end{equation}
 \end{proof}
 
+Although the previous equation derives a setting for the general convergence of
+such a function, we can get much stricter bounds under specified learning rates.
 
+\begin{theorem}[Convergence for $\eta = 2 / (\alpha + \beta)$]
+    Let $f$ be $\beta$-smooth and $\alpha$-strongly convex. Then the
+    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
+    $\eta = \frac{2}{\alpha + \beta} $ satisfies
+    \begin{equation}
+        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2} \exp \left( - \frac{4t}{\kappa
+        + 1} \right) \norm{x_1 - x^*}^2.
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    We use the same steps leading up to the previous proof, and begin
+    modifications where the two differ.
+    \begin{equation}
+        \begin{aligned}
+            \norm{x_{t + 1} - x^*}^2 
+            &\leq \left[ 1 - 2\eta \frac{\alpha \beta}{\alpha + \beta}
+            \right]\norm{x_t - x^*}^2 + \left[  \eta^2  - 2\eta\frac{1}{\alpha +
+            \beta} \right]\norm{\nabla f(x_t)}^2\\
+            &= \left[ 1 - 2\eta \frac{\alpha \beta}{\alpha + \beta}
+            \right]\norm{x_t - x^*}^2 \\
+            &= {\left( \frac{\kappa - 1}{\kappa + 1} 
+            \right)}^2\norm{x_t - x^*}^2 \\
+            &\leq {\left( \frac{\kappa - 1}{\kappa + 1} 
+            \right)}^{2t}\norm{x_1 - x^*}^2 \\
+            &\leq \exp \left( - \frac{4t}{\kappa
+        + 1} \right) \norm{x_1 - x^*}^2
+        \end{aligned}
+    \end{equation}
+\end{proof}
+
+\begin{theorem}
+    Let $f$ be convex and $\beta$-smooth. Then the
+    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
+    $\eta$ satisfies
+    \begin{equation}
+        f(x_{t+1}) - f(x^*) \leq 
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Recall from the previous proof that
+    \begin{equation}
+        \begin{aligned}
+            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta {\nabla
+            f(x_t)}^\intercal (x_t - x^*) + \eta^2 \norm{\nabla f(x_t)}^2. \\
+        \end{aligned}
+    \end{equation}
+    We can rearrange this to get that 
+    \begin{equation}
+        {\nabla f(x_t)}^\intercal (x_t - x^*) = \frac{1}{2 \eta} \left[ \norm{x_t -
+        x^*}^2 - \norm{x_{t + 1} -
+        x^*}^2 + \eta^2 \norm{\nabla f(x_t)}^2.
+        \right]
+    \end{equation}
+    By rearranging Equation~\ref{eq:lem4_2} we get that 
+    \begin{equation}
+        \begin{aligned}
+            f(x_{t + 1}) - f(x^*) &\leq {\nabla f(x_t)}^\intercal (x_t - x^*) -
+\frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
+            \\ &= \frac{1}{2 \eta} \left[ \norm{x_t -
+        x^*}^2 - \norm{x_{t + 1} -
+        x^*}^2 + \eta^2 \norm{\nabla f(x_t)}^2 \right] -
+        \frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
+            \\ &\leq \frac{1}{2 \eta} \left[ \norm{x_t -
+            x^*}^2 + (\eta^2\beta^2 - 1) \norm{x_{t + 1} -
+        x^*}^2 \right] -
+        \frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
+            \\ &= \frac{1}{2 \eta} \norm{x_t -
+            x^*}^2+ \frac{\eta^2\beta^2  - \eta\beta - 1}{2\eta}\norm{x_{t + 1} -
+        x^*}^2 
+        \end{aligned}
+    \end{equation}
+\end{proof}
 
 \bibliography{bib}
 \bibliographystyle{plainnat}
