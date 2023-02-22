@@ -467,7 +467,9 @@ such a function, we can get much stricter bounds under specified learning rates.
             \right)}^2\norm{x_t - x^*}^2 \\
             &\leq {\left( \frac{\kappa - 1}{\kappa + 1} 
             \right)}^{2t}\norm{x_1 - x^*}^2 \\
-            &\leq \exp \left( - \frac{4t}{\kappa
+            &\leq \exp \left( -\sum_{i = 1}^{2t} \frac{2t}{\kappa
+        + 1} \right) \norm{x_1 - x^*}^2 \\
+            &= \exp \left( - \frac{4t}{\kappa
         + 1} \right) \norm{x_1 - x^*}^2
         \end{aligned}
     \end{equation}
@@ -500,7 +502,7 @@ such a function, we can get much stricter bounds under specified learning rates.
     By rearranging Equation~\ref{eq:lem4_2} we get that 
     \begin{equation}
         \begin{aligned}
-            f(x_{t + 1}) - f(x^*) &\leq {\nabla f(x_t)}^\intercal (x_t - x^*) -
+            f(x_{t}) - f(x^*) &\leq {\nabla f(x_t)}^\intercal (x_t - x^*) -
 \frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
             \\ &= \frac{1}{2 \eta} \left[ \norm{x_t -
         x^*}^2 - \norm{x_{t + 1} -
