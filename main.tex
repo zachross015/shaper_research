@@ -21,6 +21,7 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
 \newtheorem{research}{Research Question}
 
 \title{Improving Gradient Descent}
@@ -243,13 +244,20 @@ the use of $\xi$ in Equation~\ref{eq:bias_correction}. Although this means there
 will never be 0 bias, the used of a $\beta$ large enough will ensure that this
 value is sufficiently small in most cases.
 
-\section{Convergence Proofs}
+\section{Gradient Descent Convergence}
 
+In general, convergence proofs follow the form of analyzing a sequence $x_1,
+x_2, \dots, x_t, \dots$ while enlisting assumptions that form a convergent
+sequence, i.e.
+\begin{equation}
+    \lim_{t \rightarrow \infty} x_t = x^* 
+\end{equation} or $x_t \rightarrow x^*$ for short.
 
-We begin by exploring the general convergence proof for Equation~\ref{eq:gd}.
-This requires a few definitions prior to analysis, mainly be defining convexity
-from a theoretical point of view, then adding upper and lower bounds to this
-definition which will aid in these proofs. 
+We begin by exploring the general convergence of convex function and prove
+Equation~\ref{eq:gd} under different assumptions.  This requires a few
+definitions prior to analysis, mainly be defining convexity from a theoretical
+point of view, then adding upper and lower bounds to this definition which will
+aid in these proofs. 
 
 \begin{definition}
     A function $f: \R^n \rightarrow \R$ is \emph{convex} if for all $x, y \in
@@ -274,9 +282,7 @@ which runs tangential to the function.
     \end{equation}
 \end{lemma}
 
-This concept is demonstrated by the blue line in Figure~\ref{fig:convex}. We
-further refine the definition of convexity into \emph{strong convexity}, which
-enables tighter quadratic lower bounds.
+This concept is demonstrated by the blue line in Figure~\ref{fig:convex}. 
 
 \begin{figure}[t]
     \begin{center}
@@ -307,29 +313,23 @@ enables tighter quadratic lower bounds.
     \label{fig:convex}
 \end{figure}
 
-\begin{definition}
-    A function $f$ is $\alpha$-strongly convex if for $\alpha > 0$ and $x \in
-    \R^n$
-    \begin{equation}
-        f(x) - \frac{\alpha}{2}\norm{x}^2   
-    \end{equation}
-    is convex.
-\end{definition}
+\subsection{Smoothness}
 
-Strong convexity allows us to apply a tighter lower bound to that derived in
-Lemma~\ref{lem:convex_bound} using the following Lemma.
+Smoothness is often an assumption when analyzing the convergence of gradient
+descent algorithms, as most proofs benefit from the assumption that the gradient
+will tend to \emph{decrease} as elements in the sequence move more towards an
+optimal point. 
 
-\begin{lemma}
-    Let $f$ be $\alpha$-strong convex. Then for all $x, y \in \R^n$ we have 
-    \begin{equation}
-        f(y) \geq f(x) + \nabla {f(x)}^\intercal(y - x) + \frac{\alpha}{2}
-        \norm{y - x}^2
-    \end{equation}
-\end{lemma}
+\begin{example}
+    Consider the functions $f(x) = x^2$ and $g(x) = |x|$. The function $f$ is
+    much more desirable when dealing with gradient descent as $\nabla f$ scales
+    with changes in $x$ as it moves closer and closer 0. The
+    function $g$ yields greater difficult, since $\nabla g$ gives almost no
+    information of the direction of the gradient, only yielding whether to move
+    in the positive or negative direction, which will cause infinite oscillation
+    if the learning rate is constant.
+\end{example}
 
-Another concept which is useful in convex convergence proofs makes use of the
-curvature around points in the input/output of $f$. This is quantified by the
-smoothness property of the function.
 
 \begin{definition}
     A continuously differentiable function $f$ is $\beta$-smooth if its gradient
@@ -376,6 +376,88 @@ at $y \in \R^n$
     \end{equation}
 \end{lemma}
 
+\begin{theorem}
+    Let $f$ be convex and $\beta$-smooth. Then the
+    gradient descent update listed in Equation~\ref{eq:gd} with learning rates
+    $\eta_i$ satisfies
+    \begin{equation}
+        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2}\norm{x_1 - x^*}^2 - \frac 1 2\sum_{i =
+        1}^{t}  \eta_i\left[1 - \beta\eta_i\right] \norm{\nabla f(x_i)}^2
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    By Lemma~\ref{lem:con_smo}, we have the difference 
+    \begin{equation}
+        \label{eq:p1}
+        f(x_t) - f(x^*) \leq \frac{\beta}{2}\norm{x_t - x^*}
+    \end{equation}
+    so that this equation depends on $\norm{x_t - x^*}$. 
+    Note that the expansion of parameter updates based on gradient descent is
+    given by
+    \begin{equation}
+        \begin{aligned}
+            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta_t {\nabla
+            f(x_t)}^\intercal (x_t - x^*) + \eta_t^2 \norm{\nabla f(x_t)}^2. \\
+        \end{aligned}
+    \end{equation}
+    We rearrange the terms in Equation~\ref{eq:lem4_2} to get 
+    \begin{equation}
+        {f(x_t)}^\intercal (x^* - x_t) \leq f(x^*) - f(x_t) -
+        \frac{1}{2\beta}\norm{\nabla f(x_t)}^2
+    \end{equation}
+    which yields
+    \begin{equation}
+        \begin{aligned}
+            \norm{x_{t + 1} - x^*}^2 &\leq \norm{x_t - x^*}^2 + 2\eta_t \left[ f(x^*) - f(x_t) - \frac{1}{2\beta}\norm{\nabla f(x_t)}^2\right] + \eta_t^2 \norm{\nabla f(x_t)}^2 \\
+            &= \norm{x_t - x^*}^2 + 2\eta_t \left[ f(x^*) - f(x_t)\right] -
+            \eta_t\left[\frac{1}{\beta} - \eta_t\right] \norm{\nabla f(x_t)}^2. \\
+        \end{aligned}
+    \end{equation}
+    Since $f$ is convex, we have $f(x^*) - f(x_t) \leq 0$ which reduces the
+    previous equation to 
+    \begin{equation}
+            \norm{x_{t + 1} - x^*}^2 \leq  \norm{x_t - x^*}^2  -
+            \eta_t\left[\frac{1}{\beta} - \eta_t\right] \norm{\nabla f(x_t)}^2, \\
+    \end{equation}
+    and the overall parameter update difference to
+    \begin{equation}
+        \norm{x_{t + 1} - x^*}^2 \leq  \norm{x_1 - x^*}^2 - \sum_{i = 1}^t  \eta_i\left[\frac{1}{\beta} - \eta_i\right] \norm{\nabla f(x_i)}^2. \\
+    \end{equation}
+    Plugging this back into Equation~\ref{eq:p1} yields the final result
+    \begin{equation}
+        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2}\norm{x_1 - x^*}^2 - \frac 1 2\sum_{i =
+        1}^{t}  \eta_i\left[1 - \beta\eta_i\right] \norm{\nabla f(x_i)}^2
+    \end{equation}
+\end{proof}
+
+\subsection{Strong Convexity}
+
+\begin{definition}
+    A function $f$ is $\alpha$-strongly convex if for $\alpha > 0$ and $x \in
+    \R^n$
+    \begin{equation}
+        f(x) - \frac{\alpha}{2}\norm{x}^2   
+    \end{equation}
+    is convex.
+\end{definition}
+
+Strong convexity allows us to apply a tighter lower bound to that derived in
+Lemma~\ref{lem:convex_bound} using the following Lemma.
+
+\begin{lemma}
+    Let $f$ be $\alpha$-strong convex. Then for all $x, y \in \R^n$ we have 
+    \begin{equation}
+        f(y) \geq f(x) + \nabla {f(x)}^\intercal(y - x) + \frac{\alpha}{2}
+        \norm{y - x}^2
+    \end{equation}
+\end{lemma}
+
+Another concept which is useful in convex convergence proofs makes use of the
+curvature around points in the input/output of $f$. This is quantified by the
+smoothness property of the function.
+
+
 \begin{lemma}
     Let $f$ be $\beta$-smooth and $\alpha$-strongly convex. Then for all $x$ and
     $y$ we have
@@ -388,11 +470,11 @@ at $y \in \R^n$
 
 \begin{theorem}[General Convergence]
     Let $f$ be $\beta$-smooth  and $\alpha$-strongly convex. Then the
-    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
-    $\eta$ satisfies
+    gradient descent update listed in Equation~\ref{eq:gd} with learning rates
+    $\eta_i$ satisfies
     \begin{equation}
-        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2} {\left( 1 - \eta \beta
-        \right)}^{2t} \norm{x_1 - x^*}^2.
+        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2} \norm{x_1 - x^*}^2\prod_{i = 1}^t {\left( 1 - \eta_i \beta
+        \right)}^{2} .
     \end{equation}
 \end{theorem}
 
@@ -414,27 +496,28 @@ at $y \in \R^n$
     We can then bound Equation~\ref{eq:to_bound} by bounding $\norm{x_t - x^*}^2$.
     \begin{equation}
         \begin{aligned}
-            \norm{x_{t + 1} - x^*}^2 &= {\left( x_{t} - \eta \nabla f(x_t) - x^*
-            \right)}^\intercal \left( x_{t} - \eta \nabla f(x_t) - x^* \right)
+            \norm{x_{t + 1} - x^*}^2 &= {\left( x_{t} - \eta_t \nabla f(x_t) - x^*
+            \right)}^\intercal \left( x_{t} - \eta_t \nabla f(x_t) - x^* \right)
             \\
-            &= {\left( (x_{t} - x^*) - \eta \nabla f(x_t) 
-            \right)}^\intercal \left( (x_{t}-x^*) - \eta \nabla f(x_t) \right)
+            &= {\left( (x_{t} - x^*) - \eta_t \nabla f(x_t) 
+            \right)}^\intercal \left( (x_{t}-x^*) - \eta_t \nabla f(x_t) \right)
             \\
-            &= \norm{x_t - x^*}^2 - 2\eta {\nabla
-            f(x_t)}^\intercal (x_t - x^*) + \eta^2 \norm{\nabla f(x_t)}^2 \\
-            &= \norm{x_t - x^*}^2 - 2\eta {[\nabla
-            f(x_t) - \nabla f(x^\star)]}^\intercal (x_t - x^*) + \eta^2
+            &= \norm{x_t - x^*}^2 - 2\eta_t {\nabla
+            f(x_t)}^\intercal (x_t - x^*) + \eta_t^2 \norm{\nabla f(x_t)}^2 \\
+            &= \norm{x_t - x^*}^2 - 2\eta_t {[\nabla
+            f(x_t) - \nabla f(x^\star)]}^\intercal (x_t - x^*) + \eta_t^2
             \norm{\nabla f(x_t)}^2 \\
-            &\leq \left[ 1 - 2\eta \frac{\alpha \beta}{\alpha + \beta}
-            \right]\norm{x_t - x^*}^2 + \left[  \eta^2  - 2\eta\frac{1}{\alpha +
+            &\leq \left[ 1 - 2\eta_t \frac{\alpha \beta}{\alpha + \beta}
+            \right]\norm{x_t - x^*}^2 + \left[  \eta_t^2  - 2\eta_t\frac{1}{\alpha +
             \beta} \right]\norm{\nabla f(x_t)}^2\\
-            &\leq \left[ 1 - 2\eta \frac{\alpha \beta}{\alpha + \beta}
-              + \eta^2\beta^2  - 2\eta\frac{\beta^2}{\alpha +
+            &= \left[ 1 - 2\eta_t \frac{\alpha \beta}{\alpha + \beta}
+              + \eta_t^2\beta^2  - 2\eta_t\frac{\beta^2}{\alpha +
             \beta} \right]\norm{x_t - x^*}^2 \\
-            &\leq \left[ 1 - 2\eta \beta 
-              + \eta^2\beta^2  \right]\norm{x_t - x^*}^2 \\
-            &= {\left( 1 -  \eta\beta  \right)}^2\norm{x_t - x^*}^2 \\
-            &\leq {\left( 1 -  \eta\beta  \right)}^{2t}\norm{x_1 - x^*}^2 \\
+            &= \left[ 1 - 2\eta_t \beta 
+              + \eta_t^2\beta^2  \right]\norm{x_t - x^*}^2 \\
+            &= {\left( 1 -  \eta_t\beta  \right)}^2\norm{x_t - x^*}^2 \\
+            &\leq \frac{\beta}{2} \norm{x_1 - x^*}^2\prod_{i = 1}^t {\left( 1 - \eta_i \beta
+        \right)}^{2} 
         \end{aligned}
     \end{equation}
 \end{proof}
@@ -444,7 +527,7 @@ such a function, we can get much stricter bounds under specified learning rates.
 
 \begin{theorem}[Convergence for $\eta = 2 / (\alpha + \beta)$]
     Let $f$ be $\beta$-smooth and $\alpha$-strongly convex. Then the
-    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
+    gradient descent update listed in Equation~\ref{eq:gd} with constant learning rate
     $\eta = \frac{2}{\alpha + \beta} $ satisfies
     \begin{equation}
         f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2} \exp \left( - \frac{4t}{\kappa
@@ -467,54 +550,10 @@ such a function, we can get much stricter bounds under specified learning rates.
             \right)}^2\norm{x_t - x^*}^2 \\
             &\leq {\left( \frac{\kappa - 1}{\kappa + 1} 
             \right)}^{2t}\norm{x_1 - x^*}^2 \\
-            &\leq \exp \left( -\sum_{i = 1}^{2t} \frac{2t}{\kappa
+            &\leq \exp \left( -\sum_{i = 1}^{2t} \frac{2}{\kappa
         + 1} \right) \norm{x_1 - x^*}^2 \\
             &= \exp \left( - \frac{4t}{\kappa
         + 1} \right) \norm{x_1 - x^*}^2
-        \end{aligned}
-    \end{equation}
-\end{proof}
-
-\begin{theorem}
-    Let $f$ be convex and $\beta$-smooth. Then the
-    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
-    $\eta$ satisfies
-    \begin{equation}
-        f(x_{t+1}) - f(x^*) \leq 
-    \end{equation}
-\end{theorem}
-
-\begin{proof}
-    Recall from the previous proof that
-    \begin{equation}
-        \begin{aligned}
-            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta {\nabla
-            f(x_t)}^\intercal (x_t - x^*) + \eta^2 \norm{\nabla f(x_t)}^2. \\
-        \end{aligned}
-    \end{equation}
-    We can rearrange this to get that 
-    \begin{equation}
-        {\nabla f(x_t)}^\intercal (x_t - x^*) = \frac{1}{2 \eta} \left[ \norm{x_t -
-        x^*}^2 - \norm{x_{t + 1} -
-        x^*}^2 + \eta^2 \norm{\nabla f(x_t)}^2.
-        \right]
-    \end{equation}
-    By rearranging Equation~\ref{eq:lem4_2} we get that 
-    \begin{equation}
-        \begin{aligned}
-            f(x_{t}) - f(x^*) &\leq {\nabla f(x_t)}^\intercal (x_t - x^*) -
-\frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
-            \\ &= \frac{1}{2 \eta} \left[ \norm{x_t -
-        x^*}^2 - \norm{x_{t + 1} -
-        x^*}^2 + \eta^2 \norm{\nabla f(x_t)}^2 \right] -
-        \frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
-            \\ &\leq \frac{1}{2 \eta} \left[ \norm{x_t -
-            x^*}^2 + (\eta^2\beta^2 - 1) \norm{x_{t + 1} -
-        x^*}^2 \right] -
-        \frac{\beta}{2} \norm{x_{t + 1} - x^*}^2
-            \\ &= \frac{1}{2 \eta} \norm{x_t -
-            x^*}^2+ \frac{\eta^2\beta^2  - \eta\beta - 1}{2\eta}\norm{x_{t + 1} -
-        x^*}^2 
         \end{aligned}
     \end{equation}
 \end{proof}
