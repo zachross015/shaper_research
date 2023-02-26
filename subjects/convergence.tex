@@ -17,6 +17,7 @@ aid in these proofs.
     A function $f: \R^n \rightarrow \R$ is \emph{convex} if for all $x, y \in
     \R^n$, for all $\lambda \in [0, 1]$,
     \begin{equation}
+        \label{eq:convex}
         \lambda f(x) + (1 - \lambda)f(y) \geq f(\lambda x + (1 - \lambda)y).
     \end{equation}
 \end{definition}
@@ -27,16 +28,28 @@ provides an upper bound for a convex function over any two points and is
 demonstrated by the red line in Figure~\ref{fig:convex}. Likewise, we
 have that a convex function can be lower-bounded at every point by a hyperplane
 which runs tangential to the function.
+This concept is demonstrated by the blue line in Figure~\ref{fig:convex}. 
 
 \begin{lemma}
     \label{lem:convex_bound}
-    If a function $f$ is convex, then for all $x, y \in \R^n$,
+    If a function $f$ is convex and differentiable, then for all $x, y \in \R^n$,
     \begin{equation}
         f(y) \geq f(x) + \nabla {f(x)}^\intercal (y - x)
     \end{equation}
 \end{lemma}
 
-This concept is demonstrated by the blue line in Figure~\ref{fig:convex}. 
+\begin{proof}
+    For $x, y \in \R^n$, Equation~\ref{eq:convex} can be restated as
+    \begin{equation}
+        f(y) - f(x) \geq \frac{f(x + \lambda(y - x)) - f(x)}{\lambda} \quad
+        \text{for} \quad \lambda \in (0, 1].
+    \end{equation}
+    Taking the limit w.r.t. $\lambda$ gives us
+    \begin{equation}
+        \lim_{\lambda \rightarrow 0^+} \frac{f(x + \lambda(y - x)) -
+        f(x)}{\lambda} = \nabla {f(x)}^\intercal(y - x)
+    \end{equation}
+\end{proof}
 
 \begin{figure}[t]
     \begin{center}
@@ -132,58 +145,86 @@ at $y \in \R^n$
 
 \begin{theorem}
     Let $f$ be convex and $\beta$-smooth. Then the
-    gradient descent update listed in Equation~\ref{eq:gd} with learning rates
-    $\eta_i$ satisfies
+    gradient descent update listed in Equation~\ref{eq:gd} with learning rate
+    $\eta$ satisfies
     \begin{equation}
-        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2}\norm{x_1 - x^*}^2 - \frac 1 2\sum_{i =
-        1}^{t}  \eta_i\left[1 - \beta\eta_i\right] \norm{\nabla f(x_i)}^2
+            \sum_{i = 1}^t f(x_i) - f(x^*) \leq
+        \frac{1}{2\eta}\left[\norm{x_0 - x^*}^2 - \norm{x_{t+1} - x^*}^2 
+            \right]  + \frac{1}{2} \sum_{i = 1}^t \left(\eta - \frac{1}{\beta}\right)\norm{\nabla f(x_t)}^2
     \end{equation}
 \end{theorem}
 
 \begin{proof}
-    By Lemma~\ref{lem:con_smo}, we have the difference 
+    By Lemma~\ref{lem:con_smo}, we can rearrange to bound the difference 
     \begin{equation}
         \label{eq:p1}
-        f(x_t) - f(x^*) \leq \frac{\beta}{2}\norm{x_t - x^*}
+        f(x_t) - f(x^*) \leq -\nabla {f(x_t)}^\intercal (x^* - x_t) - \frac{1}{2\beta}
+        \norm{\nabla f(x_t)}^2.
     \end{equation}
-    so that this equation depends on $\norm{x_t - x^*}$. 
     Note that the expansion of parameter updates based on gradient descent is
     given by
     \begin{equation}
+        \label{eq:gdupdate}
         \begin{aligned}
-            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta_t {\nabla
-            f(x_t)}^\intercal (x_t - x^*) + \eta_t^2 \norm{\nabla f(x_t)}^2. \\
+            \norm{x_{t + 1} - x^*}^2 &= \norm{x_t - x^*}^2 - 2\eta {\nabla
+            f(x_t)}^\intercal (x_t - x^*) + \eta^2 \norm{\nabla f(x_t)}^2. \\
         \end{aligned}
     \end{equation}
-    We rearrange the terms in Equation~\ref{eq:lem4_2} to get 
+    Equation~\ref{eq:gdupdate} can be rearranged to get
     \begin{equation}
-        {f(x_t)}^\intercal (x^* - x_t) \leq f(x^*) - f(x_t) -
-        \frac{1}{2\beta}\norm{\nabla f(x_t)}^2
+        {\nabla f(x_t)}^\intercal (x^* - x_t) =
+        \frac{1}{2\eta}\left[\norm{x_{t + 1} - x^*}^2 - \norm{x_t - x^*}^2 
+        \right]  - \frac{\eta}{2} \norm{\nabla f(x_t)}^2.
     \end{equation}
-    which yields
+    Equation~\ref{eq:p1} then is updated to 
     \begin{equation}
         \begin{aligned}
-            \norm{x_{t + 1} - x^*}^2 &\leq \norm{x_t - x^*}^2 + 2\eta_t \left[ f(x^*) - f(x_t) - \frac{1}{2\beta}\norm{\nabla f(x_t)}^2\right] + \eta_t^2 \norm{\nabla f(x_t)}^2 \\
-            &= \norm{x_t - x^*}^2 + 2\eta_t \left[ f(x^*) - f(x_t)\right] -
-            \eta_t\left[\frac{1}{\beta} - \eta_t\right] \norm{\nabla f(x_t)}^2. \\
+            \label{eq:}
+        f(x_t) - f(x^*) &\leq
+        -\frac{1}{2\eta}\left[\norm{x_{t + 1} - x^*}^2 - \norm{x_t - x^*}^2 
+        \right]  + \frac{1}{2} \left(\eta - \frac{1}{\beta}\right)\norm{\nabla f(x_t)}^2
+        \\ &=
+        \frac{1}{2\eta}\left[\norm{x_{t} - x^*}^2 - \norm{x_{t+1} - x^*}^2 
+        \right]  + \frac{1}{2} \left(\eta - \frac{1}{\beta}\right)\norm{\nabla f(x_t)}^2
         \end{aligned}
     \end{equation}
-    Since $f$ is convex, we have $f(x^*) - f(x_t) \leq 0$ which reduces the
-    previous equation to 
+    and by telescopic sum, this becomes
     \begin{equation}
-            \norm{x_{t + 1} - x^*}^2 \leq  \norm{x_t - x^*}^2  -
-            \eta_t\left[\frac{1}{\beta} - \eta_t\right] \norm{\nabla f(x_t)}^2, \\
-    \end{equation}
-    and the overall parameter update difference to
-    \begin{equation}
-        \norm{x_{t + 1} - x^*}^2 \leq  \norm{x_1 - x^*}^2 - \sum_{i = 1}^t  \eta_i\left[\frac{1}{\beta} - \eta_i\right] \norm{\nabla f(x_i)}^2. \\
-    \end{equation}
-    Plugging this back into Equation~\ref{eq:p1} yields the final result
-    \begin{equation}
-        f(x_{t+1}) - f(x^*) \leq \frac{\beta}{2}\norm{x_1 - x^*}^2 - \frac 1 2\sum_{i =
-        1}^{t}  \eta_i\left[1 - \beta\eta_i\right] \norm{\nabla f(x_i)}^2
+        \label{eq:last}
+        \begin{aligned}
+            \sum_{i = 1}^t f(x_i) - f(x^*) &\leq
+        \frac{1}{2\eta}\left[\norm{x_1 - x^*}^2 - \norm{x_{t+1} - x^*}^2 
+            \right]  + \frac{1}{2} \left(\eta - \frac{1}{\beta}\right)\sum_{i = 1}^t \norm{\nabla f(x_t)}^2
+        \end{aligned}
     \end{equation}
 \end{proof}
+
+\begin{corollary}
+    With constant learning rate $\eta \leq \frac{1}{\beta}$, parameter updates are
+    bounded by
+    \begin{equation}
+        f(x_t) - f(x^*) \leq \frac{}{2t\beta} \norm{x_0 - x^*}^2
+    \end{equation}
+\end{corollary}
+
+
+\begin{proof}
+    Note that $f(x^*) \leq f(x_t) \leq \dots \leq f(x_1)$ so that by
+    Equation~\ref{eq:last}, we can derive the following
+    \begin{equation}
+        \begin{aligned}
+            t(f(x_t) - f(x^*)) &\leq \sum_{i = 1}^t f(x_i) - f(x^*) \\
+        &\leq
+        \frac{1}{2\eta}\left[\norm{x_1 - x^*}^2 - \norm{x_{t+1} - x^*}^2 \right]
+            + \frac{1}{2} \left(\eta - \frac{1}{\beta}\right)\sum_{i = 1}^t
+            \norm{\nabla f(x_t)}^2 \\
+        &\leq
+        \frac{1}{2\eta}\norm{x_0 - x^*}^2.
+        \end{aligned}
+    \end{equation}
+    Moving the $t$ over yields the desired equation.
+\end{proof}
+
 
 \subsection{Strong Convexity}
 
