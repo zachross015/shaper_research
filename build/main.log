@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.7)  24 FEB 2023 18:49
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.7)  26 FEB 2023 06:42
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -740,11 +740,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
  [1
 
-{/usr/local/texlive/2017basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
-] <sc1.png, id=24, 783.92876pt x 329.23pt>
+{/usr/local/texlive/2017basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (.
+/subjects/convergence.tex [2] [3] [4])
+(./subjects/acceleration.tex [5] [6] <sc1.png, id=40, 783.92876pt x 329.23pt>
 File: sc1.png Graphic file (type png)
- <use sc1.png>
-Package pdftex.def Info: sc1.png used on input line 161.
+
+<use sc1.png>
+Package pdftex.def Info: sc1.png used on input line 114.
 (pdftex.def)             Requested size: 375.80544pt x 157.83267pt.
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
@@ -770,8 +772,8 @@ Missing character: There is no ™ in font cmr10!
 Missing character: There is no â in font cmr10!
 Missing character: There is no € in font cmr10!
 Missing character: There is no ™ in font cmr10!
-
-[3 <./sc1.png>] [4] [5] [6] [7] (build/main.bbl
+) (./subjects/first_order_methods.tex [7 <./sc1.png>])
+(build/main.bbl
 Underfull \hbox (badness 4120) in paragraph at lines 9--15
 []\OT1/cmr/m/n/10 S^^Sebastien Ga-dat, Fa-bien Pan-loup, and Sofi-ane Saadane. 
  Stochas-tic heavy ball.  \OT1/cmr/m/it/10 Elec-
@@ -789,15 +791,15 @@ Underfull \hbox (badness 2158) in paragraph at lines 17--23
 tic op-ti-miza-tion.  In
  []
 
-[8]) [9] (build/main.aux)
+) [8] (build/main.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 23444 strings out of 494437
- 602495 string characters out of 6166646
- 791971 words of memory out of 5000000
+ 23454 strings out of 494437
+ 602714 string characters out of 6166646
+ 791970 words of memory out of 5000000
  26384 multiletter control sequences out of 15000+600000
  12017 words of font info for 47 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
@@ -820,10 +822,10 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2017basic
 /texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/local/texlive/2
 017basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/
 texlive/2017basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on build/main.pdf (9 pages, 408106 bytes).
+Output written on build/main.pdf (8 pages, 407584 bytes).
 PDF statistics:
- 108 PDF objects out of 1000 (max. 8388607)
- 77 compressed objects within 1 object stream
+ 105 PDF objects out of 1000 (max. 8388607)
+ 75 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

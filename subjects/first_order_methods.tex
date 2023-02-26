@@ -1,0 +1,76 @@
+\section{First Order Methods}
+
+This section discusses methods of the form 
+\begin{equation}
+    x_{t + 1} = x_t - \eta H_t^{-1} \nabla f(x_t)
+\end{equation}
+where $H_t$ is a first-order hessian approximation.  Hessian approximation
+methods make use of the geometry of the data to approximate the Fisher
+information matrix, which is itself a hessian approximation, given by 
+\begin{equation}
+    \label{eq:fim}
+    I(x) = \mathbb E_x \left[ \nabla f(x) \nabla {f(x)}^\intercal \right]
+\end{equation}
+to find a solution to the root-finding problem
+\begin{equation}
+    f(x^*) \approx f(x_t) + \nabla {f(x_t)}^\intercal (x^* - x_t) + \frac 1 2 {(x^* -
+    x_t)}^\intercal H_t^{-1} (x^* - x_t).
+\end{equation}
+First order methods approximate the diagonal of the matrix in
+Equation~\ref{eq:fim} via Hadamard product rather than outerproduct, i.e. 
+\begin{equation}
+    I(x) \approx \text{diag} \left\{ \mathbb E_x \left[ \nabla f(x) \odot \nabla
+    {f(x)} \right] \right\}.
+\end{equation}
+rather than computing the full matrix.
+
+\citeauthor{DBLP:journals/corr/KingmaB14} provide a method which combines
+earlier methods AdaGrad and RMSProp to build \emph{Adam}, which is theoretically
+defined for some approximate $g_t$ s.t. $\E [g_t] = \nabla f(x_t)$ using
+\begin{equation}
+    x_{t + 1} = x_t - \eta \frac{\E \left[ g_t \right]}{\sqrt{\E \left[
+        {g_t}^2  \right] }}.
+\end{equation}
+This method can be seen as minimizing a \emph{Signal-to-Noise ratio}, as it
+uses the gradient's first moment (mean) divided by the gradient's square root of
+the second moment (un-adjusted standard deviation) as a descent direction. As
+this value reaches an optima, the mean will tend to decline and become overcome
+by the noise.
+
+Both $\E \left[ g_t \right]$ and $\E \left[ {g_t}^2
+\right]$ are approximated using exponential moving averages, where if $g_t \sim
+\rho(g_t)$ is the gradient distribution and $g_t$ is selected s.t. $\E[g_t] =
+\nabla f(x_t)$ then
+\begin{equation}
+    \begin{aligned}
+        m_t &= \beta_1 m_{t-1} + (1 - \beta_1)g_{t}, \text{ and} \\
+        v_t &= \beta_2 v_{t-1} + (1 - \beta_2)g_{t}^2
+    \end{aligned}
+\end{equation}
+where $m_0$ and $v_0$ are zero-value initialized. Due to this initialization,
+both terms require bias correction, as we can see by taking the expectation of
+the closed form solution to $v_t$ (the same applies to $m_t$)
+\begin{equation}
+    \label{eq:bias_correction}
+    \begin{aligned}
+        \E \left[ v_t \right] &= \E \left[ (1 - \beta_2) \sum_{i = 1}^t
+        \beta_2^{t - i} g_i^2 \right] \\
+         &= \E \left[g_t^2 \right](1 - \beta_2) \sum_{i = 1}^t
+        \beta_2^{t - i} + \xi \\
+         &= \E \left[g_t^2 \right](1 - \beta_2^t) + \xi.
+    \end{aligned}
+\end{equation}
+The bias correction is then employed by including the bias adjustment term to
+each equation
+\begin{equation}
+    \hat m_t = \frac{m_t}{1 - \beta_1^t}, \quad \text{and} \quad
+    \hat v_t = \frac{v_t}{1 - \beta_2^t}
+\end{equation}
+which is substituted in the gradient descent equation to get 
+\begin{equation}
+    x_{t + 1} = x_t - \eta \frac{\hat m_t}{\sqrt{\hat v_t} + \epsilon}
+\end{equation}
+where $\epsilon \ll 1$ is used to ensure the denominator never reaches 0. Note
+the use of $\xi$ in Equation~\ref{eq:bias_correction}. Although this means there
+will never be 0 bias, the used of a $\beta$ large enough will ensure that this
+value is sufficiently small in most cases.
