@@ -3,7 +3,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{amssymb}
-\usepackage[margin=1in]{geometry}
+\usepackage[b5paper, margin=1in]{geometry}
 \usepackage[numbers]{natbib}
 \usepackage{graphicx}
 \usepackage{pgfplots}
@@ -15,6 +15,7 @@
 \newcommand{\dv}[2]{\frac{d #1}{d #2}}
 \newcommand{\pdv}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\norm}[1]{\left\| #1 \right\| } 
+\newcommand{\abs}[1]{\left| #1 \right| } 
 
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
@@ -25,14 +26,14 @@
 \newtheorem{example}{Example}
 \newtheorem{research}{Research Question}
 
-\title{Improving Gradient Descent}
+\title{Gradient Descent}
 \author{Zachary Ross}
 
 \begin{document}
 
 \maketitle
 
-In the following writeup, we explore accelerated gradient descent (GD) methods
+In the following writeup, we explore gradient descent (GD) methods
 and their convergence. These are adaptations to the general method
 \begin{equation}
     \label{eq:gd}

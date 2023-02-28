@@ -6,6 +6,9 @@ differential equation (ODE). This effect minimizes the oscillations that tend to
 occur in gradient descent by using previous gradient computations to penalize
 rapid changes in direction and reward movement towards an optimal point.
 
+\subsection{Polyak's Momentum}%
+\label{sub:polyak_s_momentum}
+
 We reconstruct this via a method similar to as was done by
 \citeauthor{10.1214/18-EJS1395}: the ODE limit for gradient descent is given by
 the equation
@@ -50,6 +53,12 @@ than $x_{t - 1}$, this yields the \emph{heavyball} method as was discovered by
     \label{eq:heavyball}
         x_{t + 1} = x_t + \beta (x_{t} - x_{t - 1}) - \eta \nabla f(x_t).
 \end{equation}
+
+
+\subsection{Nesterov's Momentum}%
+\label{sub:nesterov_s_momentum}
+
+
 
 
 Despite the effectiveness of this method, Polyak's still has the potential to

@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex build/main"] 1677018124 "build/main.aux" "build/main.bbl" "build/main" 1677027546
+["bibtex build/main"] 1677624353 "build/main.aux" "build/main.bbl" "build/main" 1677624940
   "/usr/share/texlive/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
   "bib.bib" 1676469452 2301 6d05ffd791de70da9edbfea5246c339e ""
-  "build/main.aux" 1677027546 2534 d6d385a96edc0b364bb24a23c9d82346 "pdflatex"
+  "build/main.aux" 1677624940 3507 dbfe7bce867121d49b3d86b1c1788672 "pdflatex"
   (generated)
   "build/main.bbl"
   "build/main.blg"
-["pdflatex"] 1677027545 "main.tex" "build/main.pdf" "main" 1677027546
+["pdflatex"] 1677624939 "main.tex" "build/main.pdf" "main" 1677624940
   "/etc/texmf/web2c/texmf.cnf" 1673371121 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -41,14 +41,15 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1248133631 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb" 1248133631 31764 459c573c03a4949a528c2cc7f557e217 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb" 1248133631 33366 60462f3d16c3d0f024f1f856e64b09cd ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
-  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb" 1248133631 35309 940e81a5b9e04201a07e8b33a3ae6e64 ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty" 1583617216 6501 4011d89d9621e0b0901138815ba5ff29 ""
   "/usr/share/texlive/texmf-dist/tex/generic/iftex/ifvtex.sty" 1572645307 1057 525c2192b5febbd8c1f662c9468335bb ""
@@ -186,11 +187,14 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1673371152 4379155 98693266ff65f58d9f98aff394de12d2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1673371184 2802209 94e9097ad738c7537d78559b7bca677c ""
-  "build/main.aux" 1677027546 2534 d6d385a96edc0b364bb24a23c9d82346 "pdflatex"
-  "build/main.bbl" 1677018124 2087 f7ac8f4c844777d85bb915c232ed62b4 "bibtex build/main"
-  "build/main.toc" 1677027546 197 072b943febea74cc9fd60f566d045268 "pdflatex"
-  "main.tex" 1677027545 21374 17f0c2583b65877aa8db64d170dacf3b ""
+  "build/main.aux" 1677624940 3507 dbfe7bce867121d49b3d86b1c1788672 "pdflatex"
+  "build/main.bbl" 1677624354 2087 f7ac8f4c844777d85bb915c232ed62b4 "bibtex build/main"
+  "build/main.toc" 1677624940 550 1aed91ccdb4e8e06cefac5d0a6cc223d "pdflatex"
+  "main.tex" 1677622615 1422 bb9d035096a629fcb0f31ee8b0ba1a4d ""
   "sc1.png" 1676469452 252797 164923a9d199eca05413d58459b1525d ""
+  "subjects/acceleration.tex" 1677617866 5728 db6eccf9e02d2fe9e560c6019b918edd ""
+  "subjects/convergence.tex" 1677624938 21250 f9f1d21a412fcbd4474a49a6fd6bbff4 ""
+  "subjects/first_order_methods.tex" 1677453237 3401 fedaf79b0ebc025b38169812feb693d3 ""
   (generated)
   "build/main.aux"
   "build/main.log"
