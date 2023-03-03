@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.10)  28 FEB 2023 17:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.1.10)  2 MAR 2023 15:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -672,7 +672,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 (./subjects/convergence.tex [2] [3] [4]
 
-LaTeX Warning: Reference `eq:dt1' on page 5 undefined on input line 237.
+LaTeX Warning: Reference `eq:dt1' on page 5 undefined on input line 236.
 
 [5] [6] [7] [8]) (./subjects/acceleration.tex [9] [10]
 <sc1.png, id=54, 783.92876pt x 329.23pt>
@@ -691,10 +691,10 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 24491 strings out of 478287
- 628843 string characters out of 5849289
- 1050879 words of memory out of 5000000
- 42300 multiletter control sequences out of 15000+600000
+ 24492 strings out of 478287
+ 628861 string characters out of 5849289
+ 1055879 words of memory out of 5000000
+ 42301 multiletter control sequences out of 15000+600000
  477636 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  99i,11n,103p,717b,2005s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -715,7 +715,7 @@ exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive
 /texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/public/amsfonts/symbols/msam7.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on build/main.pdf (13 pages, 449154 bytes).
+Output written on build/main.pdf (13 pages, 451115 bytes).
 PDF statistics:
  143 PDF objects out of 1000 (max. 8388607)
  89 compressed objects within 1 object stream

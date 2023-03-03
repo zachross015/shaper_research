@@ -216,6 +216,7 @@ much tighter lower bound using the following lemma.
 \begin{proof}
     By Lemma~\ref{lem:con_smo}, the progress in objective function satisfies
     \begin{equation}
+        \label{eq:con_smo_begin}
         f_{t+1} - f_t \leq -\eta_t \left( 1 - \eta_t \frac{\beta}{2}
         \right)\norm{\nabla f_t}^2.
     \end{equation}
@@ -225,10 +226,8 @@ much tighter lower bound using the following lemma.
         (f_{t+1} {- f^*}) - (f_t {- f^*}) = \delta_{t+1} - \delta_t \leq -\eta_t \left( 1 - \eta_t \frac{\beta}{2}
         \right)\norm{\nabla f_t}^2.
     \end{equation}
-    By Lemma~\ref{lem:convex_bound} we have that 
-    \begin{equation}
-        \delta_t =  f_t - f^* \leq -\nabla f_t^\intercal (x^* - x_t),
-    \end{equation}
+    By Lemma~\ref{lem:convex_bound} we have that  $ \delta_t \leq
+    -\nabla f_t^\intercal (x^* - x_t)$,
     which by the Cauchy-Schwartz inequality gives us
     \begin{equation}
         \delta_t^2 \leq {\left(\nabla f_t^\intercal (x^* - x_t)\right)}^2 \leq
@@ -248,11 +247,7 @@ much tighter lower bound using the following lemma.
     \end{equation}
     By dividing both sides by $\delta_{t + 1}\delta_t$, we can make use of the
     fact that since $f_{t+1} \leq f_t \implies \delta_{t+1} \leq \delta_t$, then
-    the ratio satisfies the inequality
-    \begin{equation}
-        \frac{\delta_t}{\delta_{t+1}} \geq 1
-    \end{equation}
-    which gives us the left side of Equation~\ref{eq:deltabound}  as
+    the left side of Equation~\ref{eq:deltabound}  can be reduced to
     \begin{equation}
         \frac{\delta_{t+1} - \delta_t}{ \delta_{t+1}\delta_t} =
         \frac{1}{\delta_t} - \frac{1}{\delta_{t + 1}}
@@ -468,6 +463,17 @@ This random variable $g$ is assumed to have the properties that it is
         \end{equation}
 \end{enumerate}
 
+\begin{theorem}
+   Let $f$ be convex and $\beta$-smooth. Then the stochastic gradient descent
+    update using the update equation listed in Equation~\ref{eq:gd} with
+    learning rates $\eta_t \leq \frac{1}{\beta}$ satisfies
+    \begin{equation}
+        \min_{i = 2, 3, \dots, t} \E[\norm{\nabla f_i}^2|x_{i - 1}]
+        \leq
+        2\frac{f_1 - f^*}{ \sum^{t}_{i=2} \eta_i } + \frac{\sigma^2
+        }{\beta}\frac{t - 1}{ \sum_{i=2}^t\eta_i}.
+    \end{equation}
+\end{theorem}
 
 \begin{proof}
     Let $\Delta_t = g_t - \nabla f_t$. Lemma~\ref{lem:quadratic_bounds} gives us
@@ -493,18 +499,65 @@ This random variable $g$ is assumed to have the properties that it is
         \begin{aligned}
             \E[\norm{g_t}^2 | x_t] &= \E[\norm{\Delta_t + \nabla f_t}^2 | x_t]
             \\
-            &= \E[\norm{\Delta_t + \nabla f_t}^2 | x_t] \\
             &= \E[\norm{\Delta_t}^2 | x_t] + 2 \E[\nabla f_t^\intercal \Delta_t
             | x_t] + \E[\norm{\nabla f_t}^2 | x_t] \\
             &= \norm{\nabla f_t}^2 + \sigma^2
         \end{aligned}
     \end{equation}
-    yielding the final equation
+    yielding the equation
     \begin{equation}
         \begin{aligned}
-            \E[f_{t+1} | x_t] - f_t &\leq - \eta_t \left( 1 - \eta_t
+            \E[f_{t+1} | x_t] - f_t \leq - \eta_t \left( 1 - \eta_t
             \frac{\beta}{2}  \right) \norm{\nabla f_t}^2 +
-             \eta_t^2\sigma^2 \frac{\beta}{2} 
+            \eta_t^2\sigma^2 \frac{\beta}{2}
         \end{aligned}
+    \end{equation}
+    or
+    \begin{equation}
+        \eta_t \left( 1 - \eta_t
+        \frac{\beta}{2}  \right) \norm{\nabla f_t}^2  \leq f_t - \E[f_{t+1} | x_t] +
+        \eta_t^2\sigma^2 \frac{\beta}{2}.
+    \end{equation}
+    We can then add these together and take the iterated expectation to get
+    \begin{equation}
+        \begin{aligned}
+            \sum^{t}_{i=2} \eta_i \left( 1 - \eta_i \frac{\beta}{2}  \right)
+            \E[\norm{\nabla f_i}^2|x_{i - 1}]  &\leq \sum^{t}_{i=2} \E[f_i | x_{i - 1}] - \E[f_{i+1} | x_i] + \eta_i^2\sigma^2 \frac{\beta}{2}.
+        \end{aligned}
+    \end{equation}
+    Bounding the LHS by min and taking into account the telescoping yields
+    \begin{equation}
+    \begin{aligned}
+        \min_{i = 2, 3, \dots, t} \E[\norm{\nabla f_i}^2|x_{i - 1}]
+        \sum^{t}_{i=2} \eta_i \left( 1 - \eta_i \frac{\beta}{2}  \right)  &\leq
+        \E[f_2 | x_1] - \E[f_{t+1} | x_t] + \sigma^2
+        \frac{\beta}{2}\sum^{t}_{i=2} \eta_i^2 \\
+        &\leq
+       f_1 - f^* + \sigma^2 \frac{\beta}{2}\sum^{t}_{i=2} \eta_i^2
+    \end{aligned}
+    \end{equation}
+    and by dividing both sides by the coefficient of the LHS,
+    \begin{equation}
+    \begin{aligned}
+        \min_{i = 2, 3, \dots, t} \E[\norm{\nabla f_i}^2|x_{i - 1}]
+        &\leq
+        \frac{f_1 - f^*}{\sum^{t}_{i=2} \eta_i \left( 1 - \eta_i \frac{\beta}{2}  \right)} + \sigma^2 \frac{\beta}{2}\frac{\sum^{t}_{i=2}
+        \eta_i^2}{\sum^{t}_{i=2} \eta_i \left( 1 - \eta_i \frac{\beta}{2}.
+        \right)}
+    \end{aligned}
+    \end{equation}
+    Since $\eta_i \leq \frac{1}{\beta}$, $\sum_{i = 2}^t \eta_i^2 \leq (t-1)
+    {\frac{1}{\beta} }^2$ and $\sum_{i=2}^t\eta_i(1 - \eta_i \beta / 2) \geq 
+    \frac{1}{2}\sum_{i=2}^t\eta_i$
+    \begin{equation}
+    \begin{aligned}
+        \min_{i = 2, 3, \dots, t} \E[\norm{\nabla f_i}^2|x_{i - 1}]
+        &\leq
+        \frac{f_1 - f^*}{ \frac{1}{2} \sum^{t}_{i=2} \eta_i } + \sigma^2
+        \frac{\beta}{2}\frac{(t-1)
+        {\frac{1}{\beta} }^2}{ \frac{1}{2}\sum_{i=2}^t\eta_i} \\
+        &=
+        2\frac{f_1 - f^*}{ \sum^{t}_{i=2} \eta_i } + \frac{\sigma^2 }{\beta}\frac{t - 1}{ \sum_{i=2}^t\eta_i}
+    \end{aligned}
     \end{equation}
 \end{proof}
